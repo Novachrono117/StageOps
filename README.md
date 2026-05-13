@@ -151,6 +151,10 @@ Desenvolvido por Vinicius Pereira Gomes.
 
 Projeto criado com foco em tecnologia, eventos e gestão operacional.
 
+## Contato
+
+E-mail: stageops.contato@gmail.com
+
 ## Licença
 
 Este projeto ainda não possui uma licença definida.
