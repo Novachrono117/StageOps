@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StageOps | Gestão inteligente para locação de eventos</title>
+  <meta name="description" content="StageOps é uma plataforma para organizar orçamentos, estoque, reservas, montagem e operação de equipamentos de eventos." />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07080d;
+      --card: #10131d;
+      --card-soft: #151927;
+      --text: #f6f7fb;
+      --muted: #a6adbb;
+      --line: rgba(255, 255, 255, 0.1);
+      --primary: #7c3aed;
+      --primary-2: #06b6d4;
+      --success: #22c55e;
+    }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.28), transparent 34%),
+        radial-gradient(circle at top right, rgba(6, 182, 212, 0.18), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 8, 13, 0.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-size: 1.35rem;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 28px rgba(124, 58, 237, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 92px 0 72px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      color: #ddd6fe;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 16px var(--success);
+    }
+
+    h1 {
+      font-size: clamp(2.45rem, 6vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      margin-bottom: 22px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff, #c4b5fd 44%, #67e8f9);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 620px;
+      margin-bottom: 30px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      border: none;
+      box-shadow: 0 18px 40px rgba(124, 58, 237, 0.24);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    .dashboard {
+      border-radius: 22px;
+      background: rgba(16, 19, 29, 0.92);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .dashboard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .traffic {
+      display: flex;
+      gap: 7px;
+    }
+
+    .traffic span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+    }
+
+    .dashboard-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .metric, .job-card {
+      background: var(--card-soft);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .metric small, .job-card small {
+      color: var(--muted);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .metric strong {
+      font-size: 1.45rem;
+    }
+
+    .job-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .status {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      font-size: 0.82rem;
+      border: 1px solid rgba(34, 197, 94, 0.22);
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    .section-title {
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-bottom: 14px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(16, 19, 29, 0.76);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .card .icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(124, 58, 237, 0.18);
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      margin-bottom: 9px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(16, 19, 29, 0.65);
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .cta {
+      margin: 44px 0 70px;
+      padding: 36px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(6, 182, 212, 0.12));
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cta p {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero, .cards, .metric-grid, .cta {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 62px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .cta {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="StageOps">
+        <span class="logo">S</span>
+        <span>StageOps</span>
+      </a>
+      <nav class="nav-links" aria-label="Menu principal">
+        <a href="#recursos">Recursos</a>
+        <a href="#fluxo">Fluxo</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="container hero">
+      <div>
+        <div class="badge"><span class="dot"></span> Plataforma em desenvolvimento</div>
+        <h1>Gestão inteligente para <span class="gradient-text">locação de eventos.</span></h1>
+        <p>
+          O StageOps centraliza orçamentos, equipamentos, reservas, montagem e operação em uma única plataforma pensada para empresas de som, iluminação, LED, palco e estruturas.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#recursos">Conhecer recursos</a>
+          <a class="btn" href="#contato">Falar sobre o projeto</a>
+        </div>
+      </div>
+
+      <div class="panel" aria-label="Prévia do sistema StageOps">
+        <div class="dashboard">
+          <div class="dashboard-top">
+            <strong>Painel operacional</strong>
+            <div class="traffic"><span></span><span></span><span></span></div>
+          </div>
+          <div class="dashboard-body">
+            <div class="metric-grid">
+              <div class="metric"><small>Eventos</small><strong>12</strong></div>
+              <div class="metric"><small>Reservas</small><strong>37</strong></div>
+              <div class="metric"><small>Alertas</small><strong>4</strong></div>
+            </div>
+            <div class="job-card">
+              <div>
+                <small>Próxima montagem</small>
+                <strong>Palco + LED + Sonorização</strong>
+              </div>
+              <span class="status">Confirmado</span>
+            </div>
+            <div class="job-card">
+              <div>
+                <small>Checklist</small>
+                <strong>Cabos, praticáveis, processador e backline</strong>
+              </div>
+              <span class="status">Em revisão</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="recursos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Feito para a realidade da operação.</h2>
+          <p>Do orçamento até a desmontagem, o StageOps ajuda a evitar conflito de agenda, erro de estoque e perda de informação entre comercial, logística e equipe técnica.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="icon">📦</div>
+            <h3>Controle de equipamentos</h3>
+            <p>Cadastre itens, quantidades, kits, categorias e disponibilidade para cada data de evento.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📅</div>
+            <h3>Reservas e calendário</h3>
+            <p>Visualize eventos futuros, equipamentos já comprometidos e possíveis conflitos antes de fechar o orçamento.</p>
+          </article>
+          <article class="card">
+            <div class="icon">✅</div>
+            <h3>Checklists de montagem</h3>
+            <p>Organize a separação, carregamento, montagem e retorno dos equipamentos com mais segurança.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fluxo">
+      <div class="container">
+        <div class="section-title">
+          <h2>Fluxo pensado para empresas de eventos.</h2>
+          <p>Uma estrutura simples para começar, mas preparada para evoluir com relatórios, equipes e automações.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h3>Cadastro do orçamento</h3>
+              <p>Registre cliente, data, local, itens solicitados e observações técnicas.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h3>Reserva automática dos itens</h3>
+              <p>O sistema verifica a disponibilidade e separa os equipamentos para o evento.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h3>Operação e checklist</h3>
+              <p>A equipe acompanha carregamento, montagem, retirada e retorno dos equipamentos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>StageOps está nascendo.</h2>
+            <p>Projeto em desenvolvimento para transformar a operação de locadoras e produtoras de eventos.</p>
+          </div>
+          <a class="btn btn-primary" href="mailto:contato@stageops.com.br">Entrar em contato</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 StageOps. Todos os direitos reservados.</div>
+  </footer>
+</body>
+</html>
