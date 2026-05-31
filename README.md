@@ -18,6 +18,9 @@ O aplicativo real do StageOps foi iniciado em `app/` com React, Vite,
 TypeScript e Tailwind CSS. A landing page `index.html` na raiz permanece
 separada para continuar funcionando via GitHub Pages.
 
+O app já inclui módulos funcionais de Equipamentos e Clientes com persistência
+temporária em `localStorage`.
+
 Para rodar o app:
 
 ```bash

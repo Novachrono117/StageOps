@@ -41,12 +41,35 @@ src/
 ## Segurança e LGPD
 
 - Supabase Auth será usado para autenticação, sem armazenamento manual de senhas.
-- O app coleta apenas dados operacionais mínimos de equipamentos nesta etapa.
-- Dados pessoais de clientes ainda não foram implementados; quando forem, usar campos mínimos: nome, telefone, e-mail opcional e observações operacionais.
+- O app coleta apenas dados necessários para a finalidade operacional.
+- O módulo de Clientes usa campos mínimos: nome, tipo, telefone, e-mail opcional e observações operacionais.
+- Não coletar CPF, RG, data de nascimento, endereço residencial, dados bancários, cartão ou dados sensíveis.
 - Não usar `console.log` com dados pessoais, tokens, cookies ou chaves.
 - Erros exibidos ao usuário devem ser genéricos.
 - A futura tabela `security_audit_logs` deve ter retenção limitada e acesso apenas por administradores da organização.
 - A estrutura SQL inicial para RLS está em `supabase/schema.sql`.
+
+## Clientes
+
+O módulo de Clientes está em `src/pages/ClientsPage.tsx` e usa
+`src/services/clientService.ts` para persistência temporária em `localStorage`.
+
+Funcionalidades atuais:
+
+- cadastro de cliente pessoa física ou empresa;
+- edição de dados mínimos;
+- busca por nome, telefone ou e-mail;
+- filtro por tipo e status;
+- inativação e reativação;
+- exclusão local com confirmação;
+- cards de total, ativos, empresas, pessoas físicas e inativos.
+
+Preparação LGPD:
+
+- clientes possuem `organizationId` para isolamento futuro por empresa;
+- o status `inactive` prepara fluxos futuros de retenção, anonimização e exclusão;
+- observações devem conter apenas informações operacionais necessárias;
+- erros não exibem detalhes técnicos nem dados pessoais desnecessários.
 
 ## Controle de estoque próprio
 
