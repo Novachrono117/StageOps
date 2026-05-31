@@ -1,10 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StageOps | Gestão inteligente para locação de eventos</title>
   <meta name="description" content="StageOps é uma plataforma para organizar orçamentos, estoque, reservas, montagem e operação de equipamentos de eventos." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%237c3aed'/%3E%3Ctext x='50' y='64' font-size='58' text-anchor='middle' fill='white' font-family='Arial' font-weight='700'%3ES%3C/text%3E%3C/svg%3E" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -22,6 +26,11 @@
       --primary: #7c3aed;
       --primary-2: #06b6d4;
       --success: #22c55e;
+      --warning: #f59e0b;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -128,6 +137,7 @@
 
     .gradient-text {
       background: linear-gradient(135deg, #fff, #c4b5fd 44%, #67e8f9);
+      background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -245,6 +255,13 @@
       color: #86efac;
       font-size: 0.82rem;
       border: 1px solid rgba(34, 197, 94, 0.22);
+      white-space: nowrap;
+    }
+
+    .status-warning {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.26);
     }
 
     section {
@@ -252,7 +269,7 @@
     }
 
     .section-title {
-      max-width: 720px;
+      max-width: 760px;
       margin-bottom: 28px;
     }
 
@@ -295,9 +312,57 @@
       font-size: 1.15rem;
     }
 
-    .card p {
+    .card p, .card li {
       color: var(--muted);
       font-size: 0.95rem;
+    }
+
+    .card ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .card li::before {
+      content: "✓";
+      color: var(--success);
+      margin-right: 8px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .about-box {
+      background: rgba(16, 19, 29, 0.76);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 26px;
+    }
+
+    .about-box p {
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .stack-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.93rem;
     }
 
     .steps {
@@ -326,7 +391,7 @@
     }
 
     .cta {
-      margin: 44px 0 70px;
+      margin: 44px 0 40px;
       padding: 36px;
       border-radius: 28px;
       border: 1px solid var(--line);
@@ -344,13 +409,46 @@
 
     footer {
       border-top: 1px solid var(--line);
-      padding: 26px 0;
+      padding: 36px 0;
       color: var(--muted);
       font-size: 0.92rem;
+      background: rgba(5, 6, 10, 0.55);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .footer-grid h3,
+    .footer-grid h4 {
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .footer-bottom {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
     @media (max-width: 860px) {
-      .hero, .cards, .metric-grid, .cta {
+      .hero, .cards, .metric-grid, .cta, .about-grid, .footer-grid {
         grid-template-columns: 1fr;
       }
 
@@ -365,8 +463,13 @@
       .cta {
         display: grid;
       }
+
+      .stack-list {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
+
 </head>
 <body>
   <header>
@@ -376,8 +479,9 @@
         <span>StageOps</span>
       </a>
       <nav class="nav-links" aria-label="Menu principal">
+        <a href="#sobre">Sobre</a>
         <a href="#recursos">Recursos</a>
-        <a href="#fluxo">Fluxo</a>
+        <a href="#modulos">Módulos</a>
         <a href="#contato">Contato</a>
       </nav>
     </div>
@@ -386,123 +490,232 @@
   <main id="top">
     <div class="container hero">
       <div>
-        <div class="badge"><span class="dot"></span> Plataforma em desenvolvimento</div>
+        <div class="badge"><span class="dot"></span> MVP em desenvolvimento</div>
         <h1>Gestão inteligente para <span class="gradient-text">locação de eventos.</span></h1>
         <p>
-          O StageOps centraliza orçamentos, equipamentos, reservas, montagem e operação em uma única plataforma pensada para empresas de som, iluminação, LED, palco e estruturas.
+          O StageOps centraliza orçamentos, equipamentos, reservas, montagem e operação em uma única plataforma pensada para empresas de som, iluminação, LED, palco, backline e estruturas.
         </p>
         <div class="actions">
-          <a class="btn btn-primary" href="#recursos">Conhecer recursos</a>
-          <a class="btn" href="#contato">Falar sobre o projeto</a>
+          <a class="btn btn-primary" href="mailto:stageops.contato@gmail.com">Entrar em contato</a>
+          <a class="btn" href="https://github.com/Novachrono117/StageOps" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
+          <a class="btn" href="#modulos">Ver módulos futuros</a>
         </div>
       </div>
 
-      <div class="panel" aria-label="Prévia do sistema StageOps">
-        <div class="dashboard">
-          <div class="dashboard-top">
-            <strong>Painel operacional</strong>
-            <div class="traffic"><span></span><span></span><span></span></div>
+```
+  <div class="panel" aria-label="Prévia do sistema StageOps">
+    <div class="dashboard">
+      <div class="dashboard-top">
+        <strong>Painel operacional</strong>
+        <div class="traffic"><span></span><span></span><span></span></div>
+      </div>
+      <div class="dashboard-body">
+        <div class="metric-grid">
+          <div class="metric"><small>Eventos</small><strong>12</strong></div>
+          <div class="metric"><small>Reservas</small><strong>37</strong></div>
+          <div class="metric"><small>Alertas</small><strong>4</strong></div>
+        </div>
+        <div class="job-card">
+          <div>
+            <small>Próxima montagem</small>
+            <strong>Palco + LED + Sonorização</strong>
           </div>
-          <div class="dashboard-body">
-            <div class="metric-grid">
-              <div class="metric"><small>Eventos</small><strong>12</strong></div>
-              <div class="metric"><small>Reservas</small><strong>37</strong></div>
-              <div class="metric"><small>Alertas</small><strong>4</strong></div>
-            </div>
-            <div class="job-card">
-              <div>
-                <small>Próxima montagem</small>
-                <strong>Palco + LED + Sonorização</strong>
-              </div>
-              <span class="status">Confirmado</span>
-            </div>
-            <div class="job-card">
-              <div>
-                <small>Checklist</small>
-                <strong>Cabos, praticáveis, processador e backline</strong>
-              </div>
-              <span class="status">Em revisão</span>
-            </div>
+          <span class="status">Confirmado</span>
+        </div>
+        <div class="job-card">
+          <div>
+            <small>Checklist</small>
+            <strong>Cabos, praticáveis, processador e backline</strong>
           </div>
+          <span class="status status-warning">Em revisão</span>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <section id="recursos">
-      <div class="container">
-        <div class="section-title">
-          <h2>Feito para a realidade da operação.</h2>
-          <p>Do orçamento até a desmontagem, o StageOps ajuda a evitar conflito de agenda, erro de estoque e perda de informação entre comercial, logística e equipe técnica.</p>
-        </div>
+<section id="sobre">
+  <div class="container">
+    <div class="section-title">
+      <h2>Um sistema para tirar a operação das planilhas.</h2>
+      <p>O StageOps nasce para resolver problemas reais de empresas que trabalham com locação, produção técnica e montagem de eventos.</p>
+    </div>
 
-        <div class="cards">
-          <article class="card">
-            <div class="icon">📦</div>
-            <h3>Controle de equipamentos</h3>
-            <p>Cadastre itens, quantidades, kits, categorias e disponibilidade para cada data de evento.</p>
-          </article>
-          <article class="card">
-            <div class="icon">📅</div>
-            <h3>Reservas e calendário</h3>
-            <p>Visualize eventos futuros, equipamentos já comprometidos e possíveis conflitos antes de fechar o orçamento.</p>
-          </article>
-          <article class="card">
-            <div class="icon">✅</div>
-            <h3>Checklists de montagem</h3>
-            <p>Organize a separação, carregamento, montagem e retorno dos equipamentos com mais segurança.</p>
-          </article>
+    <div class="about-grid">
+      <div class="about-box">
+        <h3>Por que o StageOps existe?</h3>
+        <p>
+          Empresas de eventos precisam controlar equipamentos, datas, equipe, transporte, montagem, desmontagem e retorno. Quando tudo fica espalhado entre WhatsApp, planilhas e memória da equipe, o risco de erro operacional aumenta.
+        </p>
+        <p>
+          A proposta do StageOps é organizar esse fluxo em uma plataforma simples, visual e prática para o dia a dia.
+        </p>
+      </div>
+
+      <div class="about-box">
+        <h3>Base inicial do produto</h3>
+        <div class="stack-list">
+          <span class="pill">Controle de equipamentos</span>
+          <span class="pill">Reservas por data</span>
+          <span class="pill">Orçamentos</span>
+          <span class="pill">Checklists</span>
+          <span class="pill">Alertas operacionais</span>
+          <span class="pill">Histórico de eventos</span>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section id="fluxo">
-      <div class="container">
-        <div class="section-title">
-          <h2>Fluxo pensado para empresas de eventos.</h2>
-          <p>Uma estrutura simples para começar, mas preparada para evoluir com relatórios, equipes e automações.</p>
-        </div>
+<section id="recursos">
+  <div class="container">
+    <div class="section-title">
+      <h2>Feito para a realidade da operação.</h2>
+      <p>Do orçamento até a desmontagem, o StageOps ajuda a evitar conflito de agenda, erro de estoque e perda de informação entre comercial, logística e equipe técnica.</p>
+    </div>
 
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <div>
-              <h3>Cadastro do orçamento</h3>
-              <p>Registre cliente, data, local, itens solicitados e observações técnicas.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <div>
-              <h3>Reserva automática dos itens</h3>
-              <p>O sistema verifica a disponibilidade e separa os equipamentos para o evento.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <div>
-              <h3>Operação e checklist</h3>
-              <p>A equipe acompanha carregamento, montagem, retirada e retorno dos equipamentos.</p>
-            </div>
-          </div>
+    <div class="cards">
+      <article class="card">
+        <div class="icon">📦</div>
+        <h3>Controle de equipamentos</h3>
+        <p>Cadastre itens, quantidades, kits, categorias e disponibilidade para cada data de evento.</p>
+      </article>
+      <article class="card">
+        <div class="icon">📅</div>
+        <h3>Reservas e calendário</h3>
+        <p>Visualize eventos futuros, equipamentos já comprometidos e possíveis conflitos antes de fechar o orçamento.</p>
+      </article>
+      <article class="card">
+        <div class="icon">✅</div>
+        <h3>Checklists de montagem</h3>
+        <p>Organize a separação, carregamento, montagem e retorno dos equipamentos com mais segurança.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="modulos">
+  <div class="container">
+    <div class="section-title">
+      <h2>Módulos que vamos desenvolver.</h2>
+      <p>Agora a landing page apresenta o produto. A próxima etapa é começar o sistema real por módulos pequenos e testáveis.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="icon">🧾</div>
+        <h3>Orçamentos</h3>
+        <ul>
+          <li>Cliente, data e local</li>
+          <li>Itens e serviços</li>
+          <li>Status: rascunho, enviado, aprovado</li>
+        </ul>
+      </article>
+      <article class="card">
+        <div class="icon">🎛️</div>
+        <h3>Equipamentos</h3>
+        <ul>
+          <li>Cadastro por categoria</li>
+          <li>Quantidade total e disponível</li>
+          <li>Status: galpão, locado, manutenção</li>
+        </ul>
+      </article>
+      <article class="card">
+        <div class="icon">🚚</div>
+        <h3>Operação</h3>
+        <ul>
+          <li>Checklist de carregamento</li>
+          <li>Equipe e veículos</li>
+          <li>Retorno e conferência</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="fluxo">
+  <div class="container">
+    <div class="section-title">
+      <h2>Fluxo pensado para empresas de eventos.</h2>
+      <p>Uma estrutura simples para começar, mas preparada para evoluir com relatórios, equipes e automações.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <h3>Cadastro do orçamento</h3>
+          <p>Registre cliente, data, local, itens solicitados e observações técnicas.</p>
         </div>
       </div>
-    </section>
-
-    <section id="contato">
-      <div class="container">
-        <div class="cta">
-          <div>
-            <h2>StageOps está nascendo.</h2>
-            <p>Projeto em desenvolvimento para transformar a operação de locadoras e produtoras de eventos.</p>
-          </div>
-          <a class="btn btn-primary" href="mailto:stageops.contato@gmail.com">Entrar em contato</a>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <h3>Reserva automática dos itens</h3>
+          <p>O sistema verifica a disponibilidade e separa os equipamentos para o evento.</p>
         </div>
       </div>
-    </section>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div>
+          <h3>Operação e checklist</h3>
+          <p>A equipe acompanha carregamento, montagem, retirada e retorno dos equipamentos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="container">
+    <div class="cta">
+      <div>
+        <h2>StageOps está em desenvolvimento.</h2>
+        <p>Projeto criado para transformar a operação de locadoras, produtoras e equipes técnicas de eventos.</p>
+      </div>
+      <a class="btn btn-primary" href="mailto:stageops.contato@gmail.com">Entrar em contato</a>
+    </div>
+  </div>
+</section>
+```
+
   </main>
 
   <footer>
-    <div class="container">© 2026 StageOps. Todos os direitos reservados.</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>StageOps</h3>
+          <p>Plataforma em desenvolvimento para gestão de locação de equipamentos, orçamentos, reservas e operação de eventos.</p>
+        </div>
+
+```
+    <div>
+      <h4>Contato</h4>
+      <div class="footer-links">
+        <a href="mailto:stageops.contato@gmail.com">stageops.contato@gmail.com</a>
+        <a href="https://github.com/Novachrono117/StageOps" target="_blank" rel="noopener noreferrer">GitHub do projeto</a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Navegação</h4>
+      <div class="footer-links">
+        <a href="#sobre">Sobre</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#modulos">Módulos futuros</a>
+        <a href="#contato">Contato</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 StageOps. Todos os direitos reservados.</span>
+    <span>Desenvolvido por Vinicius Pereira Gomes.</span>
+  </div>
+</div>
+```
+
   </footer>
 </body>
 </html>
