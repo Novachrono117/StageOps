@@ -12,6 +12,23 @@ A landing page inicial do StageOps está disponível em:
 https://novachrono117.github.io/StageOps/
 ```
 
+## Aplicativo SaaS
+
+O aplicativo real do StageOps foi iniciado em `app/` com React, Vite,
+TypeScript e Tailwind CSS. A landing page `index.html` na raiz permanece
+separada para continuar funcionando via GitHub Pages.
+
+Para rodar o app:
+
+```bash
+cd app
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Mais detalhes em `app/README.md`.
+
 ## Status do projeto
 
 Projeto em fase inicial de desenvolvimento.
