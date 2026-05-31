@@ -10,18 +10,18 @@ import {
 } from "lucide-react";
 
 type SidebarProps = {
-  currentPage: "dashboard" | "equipment" | "clients";
-  onNavigate: (page: "dashboard" | "equipment" | "clients") => void;
+  currentPage: "dashboard" | "equipment" | "clients" | "events";
+  onNavigate: (page: "dashboard" | "equipment" | "clients" | "events") => void;
 };
 
 const mainItems = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "equipment", label: "Equipamentos", icon: Boxes },
-  { id: "clients", label: "Clientes", icon: Users }
+  { id: "clients", label: "Clientes", icon: Users },
+  { id: "events", label: "Eventos", icon: CalendarDays }
 ] as const;
 
 const futureItems = [
-  { label: "Eventos", icon: CalendarDays },
   { label: "Orçamentos", icon: FileText },
   { label: "Política de Privacidade", icon: ShieldCheck },
   { label: "Logs de Segurança", icon: LockKeyhole, adminOnly: true },

@@ -4,24 +4,29 @@ import { AppLayout } from "./components/layout/AppLayout";
 import { ClientsPage } from "./pages/ClientsPage";
 import { Dashboard } from "./pages/Dashboard";
 import { EquipmentPage } from "./pages/EquipmentPage";
+import { EventsPage } from "./pages/EventsPage";
 import { clientService } from "./services/clientService";
 import { equipmentService } from "./services/equipmentService";
+import { eventService } from "./services/eventService";
 import type { Client } from "./types/client";
 import type { Equipment } from "./types/equipment";
+import type { Event } from "./types/event";
 
-type Page = "dashboard" | "equipment" | "clients";
+type Page = "dashboard" | "equipment" | "clients" | "events";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("dashboard");
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([equipmentService.list(), clientService.list()])
-      .then(([loadedEquipment, loadedClients]) => {
+    Promise.all([equipmentService.list(), clientService.list(), eventService.list()])
+      .then(([loadedEquipment, loadedClients, loadedEvents]) => {
         setEquipment(loadedEquipment);
         setClients(loadedClients);
+        setEvents(loadedEvents);
       })
       .catch(() =>
         setLoadError("Não foi possível carregar os dados locais do aplicativo.")
@@ -42,8 +47,15 @@ export default function App() {
           equipment={equipment}
           onEquipmentChanged={setEquipment}
         />
-      ) : (
+      ) : currentPage === "clients" ? (
         <ClientsPage clients={clients} onClientsChanged={setClients} />
+      ) : (
+        <EventsPage
+          clients={clients}
+          equipment={equipment}
+          events={events}
+          onEventsChanged={setEvents}
+        />
       )}
     </AppLayout>
   );

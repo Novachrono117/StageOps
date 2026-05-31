@@ -4,8 +4,8 @@ import { Sidebar } from "./Sidebar";
 
 type AppLayoutProps = {
   children: ReactNode;
-  currentPage: "dashboard" | "equipment" | "clients";
-  onNavigate: (page: "dashboard" | "equipment" | "clients") => void;
+  currentPage: "dashboard" | "equipment" | "clients" | "events";
+  onNavigate: (page: "dashboard" | "equipment" | "clients" | "events") => void;
 };
 
 export function AppLayout({ children, currentPage, onNavigate }: AppLayoutProps) {

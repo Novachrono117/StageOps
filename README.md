@@ -18,8 +18,18 @@ O aplicativo real do StageOps foi iniciado em `app/` com React, Vite,
 TypeScript e Tailwind CSS. A landing page `index.html` na raiz permanece
 separada para continuar funcionando via GitHub Pages.
 
-O app já inclui módulos funcionais de Equipamentos e Clientes com persistência
+O app já inclui módulos funcionais de Equipamentos, Clientes e Eventos com persistência
 temporária em `localStorage`.
+
+O módulo de Eventos suporta períodos de múltiplos dias, montagem/desmontagem,
+custos estimados por etapa, visitas técnicas, equipamentos vinculados e alertas
+de conflito de equipamentos e equipe. Também prepara alocação de funcionários,
+freelancers, empresas parceiras e visibilidade por perfil. Eventos também têm
+categoria/subcategoria, agenda diária, hora extra prevista, veículos e sugestão
+local de equipamentos por texto. A listagem de eventos usa cards com filtros por
+status, categoria, período, mês e ano. Veículos calculam combustível
+automaticamente para diesel, gasolina, etanol e flex, e eventos antigos só devem
+ser registrados como finalizados ou cancelados.
 
 Para rodar o app:
 
